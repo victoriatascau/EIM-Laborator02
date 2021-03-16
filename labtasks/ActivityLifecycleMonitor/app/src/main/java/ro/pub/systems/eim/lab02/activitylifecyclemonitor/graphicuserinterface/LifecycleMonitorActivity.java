@@ -7,6 +7,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.PopupWindow;
 
@@ -57,12 +58,18 @@ public class LifecycleMonitorActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lifecycle_monitor);
 
+        if (savedInstanceState == null) {
+            Log.d(Constants.TAG, "onCreate() method was invoked without a previous state");
+        } else {
+            Log.d(Constants.TAG, "onCreate() method was invoked with a previous state");
+        }
+
         Button okButton = (Button) findViewById(R.id.ok_button);
         okButton.setOnClickListener(buttonClickListener);
         Button cancelButton = (Button) findViewById(R.id.cancel_button);
         cancelButton.setOnClickListener(buttonClickListener);
 
-        Log.d(Constants.TAG, "onCreate() method was invoked without a previous state");
+
     }
 
     @Override
@@ -99,5 +106,38 @@ public class LifecycleMonitorActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         Log.d(Constants.TAG, "onDestroy() method was invoked");
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+
+        EditText usernameEditText = (EditText)findViewById(R.id.username_edit_text);
+        EditText passwordEditText = (EditText)findViewById(R.id.password_edit_text);
+        CheckBox rememberMeCheckBox = (CheckBox)findViewById(R.id.remember_me_checkbox);
+
+        if (rememberMeCheckBox.isChecked() == true) {
+            savedInstanceState.putString(Constants.USERNAME_EDIT_TEXT, usernameEditText.getText().toString());
+            savedInstanceState.putString(Constants.PASSWORD_EDIT_TEXT, passwordEditText.getText().toString());
+            savedInstanceState.putBoolean(Constants.REMEMBER_ME_CHECKBOX, rememberMeCheckBox.isChecked());
+        }
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        if (savedInstanceState.containsKey(Constants.USERNAME_EDIT_TEXT) == true) {
+            EditText usernameEditText = (EditText)findViewById(R.id.username_edit_text);
+            usernameEditText.setText(savedInstanceState.getString(Constants.USERNAME_EDIT_TEXT));
+        }
+        if (savedInstanceState.containsKey(Constants.PASSWORD_EDIT_TEXT) == true) {
+            EditText passwordEditText = (EditText)findViewById(R.id.password_edit_text);
+            passwordEditText.setText(savedInstanceState.getString(Constants.PASSWORD_EDIT_TEXT));
+        }
+        if (savedInstanceState.containsKey(Constants.REMEMBER_ME_CHECKBOX) == true) {
+            CheckBox rememberMeCheckBox = (CheckBox)findViewById(R.id.remember_me_checkbox);
+            rememberMeCheckBox.setText(savedInstanceState.getString(Constants.REMEMBER_ME_CHECKBOX));
+        }
     }
 }
