@@ -58,18 +58,29 @@ public class LifecycleMonitorActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lifecycle_monitor);
 
-        if (savedInstanceState == null) {
-            Log.d(Constants.TAG, "onCreate() method was invoked without a previous state");
-        } else {
-            Log.d(Constants.TAG, "onCreate() method was invoked with a previous state");
-        }
-
         Button okButton = (Button) findViewById(R.id.ok_button);
         okButton.setOnClickListener(buttonClickListener);
         Button cancelButton = (Button) findViewById(R.id.cancel_button);
         cancelButton.setOnClickListener(buttonClickListener);
 
+        if (savedInstanceState == null) {
+            Log.d(Constants.TAG, "onCreate() method was invoked without a previous state");
+        } else {
+            Log.d(Constants.TAG, "onCreate() method was invoked with a previous state");
 
+            if (savedInstanceState.containsKey(Constants.USERNAME_EDIT_TEXT) == true) {
+                EditText usernameEditText = (EditText)findViewById(R.id.username_edit_text);
+                usernameEditText.setText(savedInstanceState.getString(Constants.USERNAME_EDIT_TEXT));
+            }
+            if (savedInstanceState.containsKey(Constants.PASSWORD_EDIT_TEXT) == true) {
+                EditText passwordEditText = (EditText)findViewById(R.id.password_edit_text);
+                passwordEditText.setText(savedInstanceState.getString(Constants.PASSWORD_EDIT_TEXT));
+            }
+            if (savedInstanceState.containsKey(Constants.REMEMBER_ME_CHECKBOX) == true) {
+                CheckBox rememberMeCheckBox = (CheckBox)findViewById(R.id.remember_me_checkbox);
+                rememberMeCheckBox.setText(savedInstanceState.getString(Constants.REMEMBER_ME_CHECKBOX));
+            }
+        }
     }
 
     @Override
